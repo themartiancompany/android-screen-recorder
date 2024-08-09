@@ -79,7 +79,8 @@ _android_screenrecorder() {
     "sync" \
     "${_screenrecord[@]}" \
       "${_screenrecord_opts[@]}" \
-      "${_out[*]}"
+      "${_out[*]}" || \
+    true
   sudo \
     chown \
       -R \
