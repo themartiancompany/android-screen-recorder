@@ -67,7 +67,11 @@ _android_screenrecorder() {
       "${5}"
     ) \
     _screenrecord_opts=() \
-    _screenrecord=()
+    _screenrecord=() \
+    _uid
+  _uid="$( \
+    id \
+      -u)"
   "_${_method}_screenrecord"
   _run \
     "record" \
@@ -75,6 +79,15 @@ _android_screenrecorder() {
     "sync" \
     "${_screenrecord[@]}" \
       "${_screenrecord_opts[@]}" \
+      "${_out[*]}"
+  sudo \
+    chown \
+      -R \
+      "${_uid}:${_uid}" \
+      "${_out[*]}"
+  sudo \
+    chmod \
+      640 \
       "${_out[*]}"
 }
 
