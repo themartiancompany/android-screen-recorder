@@ -42,6 +42,25 @@ _method_auto_detect() {
 }
 
 _root_screenrecord(){
+  local \
+    _sdk
+  _sdk="$( \
+    sdk-version)"
+  if (( "${_sdk}" < 28 )); then
+    if (( 180 < "${_length}" )); then
+      _msg_info \
+        "Android<=27 only supports 3 minutes recordings."
+      _screenrecord_opts+=(
+        --time-limit
+          "180"
+      )
+    else
+      _screenrecord_opts+=(
+        --time-limit
+          "${_length}"
+      )
+    fi
+  fi
   _screenrecord+=(
     "sudo"
       "/system/bin/screenrecord"
