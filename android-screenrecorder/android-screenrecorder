@@ -56,8 +56,6 @@ _root_screenrecord(){
       _screenrecord_opts+=(
         --time-limit
           "180"
-        --size
-          "640x360"
       )
     else
       _screenrecord_opts+=(
@@ -73,6 +71,8 @@ _root_screenrecord(){
   _screenrecord_opts+=(
     --bit-rate
       "${_rate}"
+    --size
+      "640x360"
   )
 }
 
