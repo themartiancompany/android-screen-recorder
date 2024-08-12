@@ -18,6 +18,9 @@ source \
 _requirements() {
   _check_cmd \
     'su'
+  _check_cmd \
+    'sdk-version' \
+    'android-utils'
 }
 
 # shellcheck disable=SC2034
