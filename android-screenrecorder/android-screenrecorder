@@ -136,7 +136,7 @@ _set_overrides() {
   _set_override \
     "bit" \
     "rate" \
-    "314000" # 314 Kb?
+    "160000" # 160 Kb?
     # "16000000" # 16 Mb?
   _set_override \
     "recording" \
