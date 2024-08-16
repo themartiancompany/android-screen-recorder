@@ -65,6 +65,11 @@ _root_screenrecord(){
           "${_buffer}"
       )
     fi
+  else
+    _screenrecord_opts+=(
+      --time-limit
+        "${_buffer}"
+    )
   fi
   _screenrecord+=(
     "sudo"
