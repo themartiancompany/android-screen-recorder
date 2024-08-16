@@ -1,5 +1,5 @@
 ===============
-Android screenrecorder Authors
+Android Screen Recorder Authors
 ===============
 
 * Pellegrino Prevete <pellegrinoprevete@gmail.com>
