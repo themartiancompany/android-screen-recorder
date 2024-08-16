@@ -32,6 +32,7 @@ _global_variables() {
   out_file=""
   bit_rate=""
   recording_length=""
+  recording_buffer=""
   encoding_delay=""
   scale_factor=""
   color=""
@@ -61,7 +62,7 @@ _root_screenrecord(){
     else
       _screenrecord_opts+=(
         --time-limit
-          "${_length}"
+          "${_buffer}"
       )
     fi
   fi
@@ -82,15 +83,16 @@ _root_screenrecord(){
 # $2: recording method (root)
 # $2: delay seconds
 # $3: output video file
-_android_screenrecorder() {
+_android_screen_recorder() {
   local \
     _format="${1}" \
     _method="${2}" \
     _rate="${3}" \
     _length="${4}" \
-    _resolution="${5}" \
+    _buffer="${5}" \
+    _resolution="${6}" \
     _out=(
-      "${6}"
+      "${7}"
     ) \
     _screenrecord_opts=() \
     _screenrecord=() \
@@ -144,6 +146,10 @@ _set_overrides() {
     "180" # "$(( 24 * 60 * 60 ))" # 24 hours
   _set_override \
     "recording" \
+    "buffer" \
+    "${recording_length}"
+  _set_override \
+    "recording" \
     "resolution" \
     '1280x720'
   if [[ -v override_color ]]; then
@@ -166,6 +172,7 @@ _show_config() {
   _msg_info "         Recording method:   $(_get "recording" "method")"
   _msg_info "                 Bit rate:   $(_get "bit" "rate")"
   _msg_info "         Recording length:   $(_get "recording" "length")"
+  _msg_info "         Recording buffer:   $(_get "recording" "buffer")"
   _msg_info "     Recording resolution:   $(_get "recording" "resolution")"
   _msg_info "              Output file:   $(_get "out" "file")"
 }
@@ -189,20 +196,22 @@ Usage:
     [options]
     (<out_file>)
   options:
-     -f                   Recording format
-                          Default: $(_get "recording" "format")
-     -m                   Recording method
-                          Default: $(_get "recording" "method")
-     -b                   Video bitrate.
-                          Default: $(_get "bit" "rate").
-     -l                   Length of the recording.
-                          Default: $(_get "recording" "length").
-     -r <widthxheight>    Recording resolution.
-                          Default: $(_get "recording" "resolution").
+     -f                       Recording format
+                              Default: $(_get "recording" "format")
+     -m                       Recording method
+                              Default: $(_get "recording" "method")
+     -b                       Video bitrate.
+                              Default: $(_get "bit" "rate").
+     -L <recording_length>    Length of the recording.
+                              Default: $(_get "recording" "length").
+     -k <recording_buffer>    Buffer of the recording.
+                              Default: $(_get "recording" "buffer").
+     -r <widthxheight>        Recording resolution.
+                              Default: $(_get "recording" "resolution").
 
-     -s                   Output to stdout.
-     -h                   This message.
-     -v                   Enable verbose output
+     -s                       Output to stdout.
+     -h                       This message.
+     -v                       Enable verbose output
 ENDUSAGETEXT
   _printf \
     '%s\n' \
@@ -218,14 +227,15 @@ _requirements
 # shellcheck disable=SC2034
 while \
   getopts \
-    'f:m:b:l:r:cvh?' \
+    'f:m:b:L:k:r:cvh?' \
     arg; do
   case \
     "${arg}" in
     f) override_recording_format="${OPTARG}" ;;
     m) override_recording_method="${OPTARG}" ;;
     b) override_bit_rate="${OPTARG}" ;;
-    l) override_recording_length="${OPTARG}" ;;
+    L) override_recording_length="${OPTARG}" ;;
+    k) override_recording_buffer="${OPTARG}" ;;
     r) override_recording_resolution="${OPTARG}" ;;
     c) override_color="y" ;;
     v) override_quiet="n" ;;
@@ -260,8 +270,9 @@ app_opts=(
   "${recording_method}"
   "${bit_rate}"
   "${recording_length}"
+  "${recording_buffer}"
   "${recording_resolution}"
   "${out_file}"
 )
-_android_screenrecorder \
+_android_screen_recorder \
   "${app_opts[@]}"
