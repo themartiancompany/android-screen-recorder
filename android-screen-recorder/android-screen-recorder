@@ -65,7 +65,6 @@ _root_screenrecord(){
           "${_buffer}"
       )
     fi
-  else
   fi
   _screenrecord+=(
     "sudo"
